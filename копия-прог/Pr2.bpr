@@ -3,9 +3,9 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="Pr1.exe"/>
-    <OBJFILES value="Pr1.obj Un.obj"/>
-    <RESFILES value="Pr1.res"/>
+    <PROJECT value="Pr2.exe"/>
+    <OBJFILES value="Pr2.obj Un.obj"/>
+    <RESFILES value="Pr2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
@@ -29,15 +29,15 @@
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
-    <MAINSOURCE value="Pr1.cpp"/>
-    <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <MAINSOURCE value="Pr2.cpp"/>
+    <INCLUDEPATH value="..\Letopr;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..\Letopr;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -IE:\. -I$(BCB)\include 
-      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-I..\Letopr -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -IE:\. 
+      -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -53,8 +53,8 @@
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="Pr1.res" FORMNAME="" UNITNAME="Pr1.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Pr1.cpp" FORMNAME="" UNITNAME="Pr1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pr2.res" FORMNAME="" UNITNAME="Pr2.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Pr2.cpp" FORMNAME="" UNITNAME="Pr2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Un.cpp" FORMNAME="Form1" UNITNAME="Un" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>

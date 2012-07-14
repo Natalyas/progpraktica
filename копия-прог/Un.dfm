@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 891
-  Top = 325
+  Left = 578
+  Top = 277
   BorderStyle = bsSingle
   Caption = #1057#1080#1084#1087#1083#1077#1082#1089' '#1084#1077#1090#1086#1076
   ClientHeight = 416
@@ -19,8 +19,8 @@ object Form1: TForm1
     Top = 8
     Width = 617
     Height = 401
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #1042#1074#1086#1076' '#1079#1085#1072#1095#1077#1085#1080#1081

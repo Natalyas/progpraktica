@@ -25,34 +25,34 @@ double a[100][100];
 int cl,an,ay;
 
 
-int t,k,l;
+//int k,l;
 
-int gaus(double a[100][100] ,int y,int n)
+int gaus(double a[100][100] ,int y,int n,int k,int l)
 {// Метод гаусса
    int i, j, z;
    double m;
    i=k; j=l;
-   m=a[k][l];
+   m=a[k][l];// не равен 0 по условиям вызова.
        for(z=0 ; z<=y ; z++)
        {
            a[k][z]=a[k][z]/m;
        }
-       for (z=0; z<=n ;z++) 
+       for (z=0; z<=n ;z++)
        {
            for (j=0 ; j<=y+1 ; j++)
-           { 
+           {
                if (z!=k)
                {
                   if (j!=l)
-                  { 
+                  {
                      a[z][j]=a[z][j]-a[z][l]*a[k][j];
                   }
                }
            }
        }
        for(i=0; i<=n ;i++)
-       { 
-           if (i!=k) 
+       {
+           if (i!=k)
 	   {
 	      a[i][l]=0;
 	   }
@@ -60,55 +60,66 @@ int gaus(double a[100][100] ,int y,int n)
 return 0;
 }
 int proverca(double a[100][100] ,int n,int y)//
-{  int i,j,z;
+{ // привед.зад. с отриц. своб.членом.
+
+   int i,j;
+   int k,l; // разрешающая строка и столбец
    double min;
-   t=0;
-while (t!=2){
-     t=2;
+   while (1)//цикл пересчёта матрицы пока есть отрицат. с.ч.
+   {        // выход из цикла при условии что не найден отрицат. с.ч.
+      k=-1;// признак "нет" отрицат.своб.члена
      for( i=0; i<n ; i++ )
-     {
+     { //поиск отрицат. с.ч.
 	if (a[i][y]<0)
-	{
-	   t=t-1;
-	   if (t==1) { 	min=a[i][y];}
-	       k=i;
-	}
-	if (a[i][y]<min)
-	{
-	    min=a[i][y]; k=i;
-	}
-	if (t==2) return 0;
+	{ // выбор.мин. отриц.с.ч. запом. разр.строку.
+	   if (k==-1)
+           {
+           	min=a[i][y];
+                k=i;
+           }
+           if (a[i][y]<min)
+	   {
+	       min=a[i][y];
+               k=i;
+	   }
+        }
      }
-     z=2;
+     if (k==-1)
+       return 0;// если  ни одного с.ч. отрицат. нет. то выход
+
+     l=-1; //признак отсутств. отрицат эл. в строке.
      for (j=0 ; j<y ; j++)
      {
 	    if (a[k][j]<0)
-	     {    z=z-1;
-	       if (t!=2)
-	       {
-		       l=j;
-		       gaus(a,y,n);
-		       j=y;
-	       }
+	     { // найдена разр.столб.(отриц.эт-т разр.строки)
+                  l=j;
+		  gaus(a,y,n,k,l); // пересчёт
+		  j=y;// выход из for
 	     }
       }
-      if (z==2){ Form1->Memo1->Text="Нет решения"; return 0;}
-}
+      if (l==-1)
+      { // нет отриц.эл. в разр.строке-нет реш.
+
+           Form1->Memo1->Text="Нет решения";
+           return 0;
+      }
+   }
    return 0;
 }
 void ocen(double a[100][100], int n, int y)
-{
-  int i,j,h,b,d;
+{// получение вектора решения. и максимум целев. функц.
+   int i,j,h,b,d;
   int v[100];
+
   for(i=0; i<100 ; i++)
-  {
+  {// иниц. вектора V
        v[i]=-1;
   }
   for (j=0; j<y; j++)
-  {
+  { // поиск элементов базиса и соответствие строкам
         b=0; h=0;
         for (i=0; i<n; i++)
-        {
+        {// подсч. нулевых элем. и единичн, с запомин.номера единичн.
              if (a[i][j]==0)
              {
                  h++;
@@ -118,43 +129,43 @@ void ocen(double a[100][100], int n, int y)
 		b++;
                 d=i;
 	     }
-	 }
-	 if ((b==1)&&(h==n-1))
-                 v[j]=d;
+	}
+	if ((b==1)&&(h==n-1))// если столб. базисный
+             v[j]=d;
  }
+ // разбор завершён,
+ // вывод данных на форму.
  Form1->StringGrid3->ColCount=y;
  for(i=0; i<y; i++)
     {
        if (v[i]!=-1)
        {
-        Form1->StringGrid3->Cells[i][0]=a[v[i]][y];
-       }else         Form1->StringGrid3->Cells[i][0]=0;
+            Form1->StringGrid3->Cells[i][0]=a[v[i]][y];
+       }
+       else Form1->StringGrid3->Cells[i][0]=0;
     }
 
 return;
 }
 int ocenki(double a[100][100], double *bb, int n, int y )
-{  double min;
+{  // рассчёт критерия
+   double min;
    int  i,j;
-       for (j=0; j<y ; j++)
-      { 
-          a[n+1][j]=0;
-      }
       for (j=0; j<y ; j++)
       {
  	       if (y-n<=0)
-                {        
+                {
                     for (i=0; i<n ; i++)
                     {
-                     a[n+1][j]=a[n+1][j]+a[i][j]*a[i][y];
+                     a[n+1][j]+=a[i][j]*a[i][y];
                     }
-                    a[n+1][j]=a[n+1][j]-bb[y];
+                    a[n+1][j]-=bb[y];
                 }
-               else 
-               { 
+               else
+               {
 			for( i=0 ; i<n ; i++)
                         {
-                     		a[n+1][j]=a[n+1][j]+a[i][j]*a[i][y];
+                     		a[n+1][j]+=a[i][j]*a[i][y];
                         }
                }
       }
@@ -292,29 +303,33 @@ Memo1->Text=(AnsiString)"Файл прочитан";
 
 
 void __fastcall TForm1::Button3Click(TObject *Sender)
-{ int j,i;
-  double bb[100];double min;
-   Memo1->Text="Решение завершено" ;
-  for(int j=0; j<ay;j++)
-  {a[an][j]=-c[j];
-   a[an+1][j]=0;
-   a[an+2][j]=c[j];
-  }
- for(int i=0;i<an+2;i++)
- {bb[i]=a[i][ay-1];
- }
-ay--;
-proverca(a,an,ay);
-t=2;
-do
-{    ocenki(a,bb,an,ay);
-     t=2;
+{ int j,i,t,l,k;             //обработчик кнопки запуска расчера итога программы
+   double bb[100];double min;
+   for(int j=0; j<ay;j++) //заполняет 3 последних строки симплекс таблицы
+   {
+      a[an][j]=-c[j];
+      a[an+1][j]=0;
+      a[an+2][j]=c[j];
+   }
+   for(int i=0;i<an+2;i++)//инициализирует массив bb хранит исходные свободные члены(с.ч.)
+   {
+      bb[i]=a[i][ay-1];
+   }
+   ay--; //размер матрицы без учета столбца с.ч.
+   proverca(a,an,ay);//функция делает с.ч. неотрицательными что требует симплекс метод(с.м.)
+//   t=2; //
+   do
+   {
+      ocenki(a,bb,an,ay);
+     //t=2;
+     l=-1;
      for (j=0; j<ay ; j++)
      {
 	     if (a[an][j]<0)
 	     {
-                 t=t-1;
-                 if (t==1)
+                 //t=t-1;
+                 //if (t==1)
+                 if(l==-1)
                  {
                    l=j; min=a[an+1][j];
                  }
@@ -325,7 +340,8 @@ do
 	      }
      }
      j=0;
-     if(t<2)
+     //if(t<2)
+     if(l!=-1)
      {
         for ( i=0 ; i<an ; i++)
         {
@@ -341,46 +357,57 @@ do
                }
             }
         }
-     	gaus(a,ay,an);
+     	gaus(a,ay,an,k,l);
      }
-}while (t!=2);
+}//while (t!=2);
+ while(l==-1);
  ocen(a,an,ay);
 
  StringGrid4->RowCount=an+1;
  StringGrid4->ColCount=ay+1;
 
- for(int i=0;i<an+1;i++)
-  for(int j=0;j<=ay;j++)
-  StringGrid4->Cells[j][i]=a[i][j];
- Edit1->Text=a[an][ay];
- Memo2->Text="Решение завершено"  ;
+   for(int i=0;i<an+1;i++)
+      for(int j=0;j<=ay;j++)
+         StringGrid4->Cells[j][i]=a[i][j];
+   Edit1->Text=a[an][ay]; //вывод ответа
+   Memo1->Text="Решение завершено" ;
+   Memo2->Text="Решение завершено";
  }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Button4Click(TObject *Sender)
 {
- FILE *f;
- int i,j,q;
- if(!SaveDialog1->Execute()) {Memo2->Text="Ошибка сохранения файла";return;}
- f=fopen(SaveDialog1->FileName.c_str(),"wt");
- if(f==NULL) {Memo2->Text="Ошибка сохранения файла";return;}
+   FILE *f;        //
+   int i,j,q;
+   if(!SaveDialog1->Execute())
+   {
+      Memo2->Text="Ошибка сохранения файла";
+      return;
+   }
+   f=fopen(SaveDialog1->FileName.c_str(),"wt");
+   if(f==NULL)
+   {
+      Memo2->Text="Ошибка сохранения файла";
+      return;
+   }
+   fprintf(f,"Максимум целевой функции %f\n",a[an][ay]);
+   fprintf(f,"Решение задачи: ");
+   q=StringGrid3->ColCount;
 
- fprintf(f,"Максимум целевой функции %f\n",a[an][ay]);
- fprintf(f,"Решение задачи: ");
- q=StringGrid3->ColCount;
- for(i=0;i<q-1;i++)
-   fprintf(f," %s,",StringGrid3->Cells[i][0].c_str());
- fprintf(f," %s\n",StringGrid3->Cells[i][0].c_str());
- fprintf(f,"Последняя симплекс таблица\n");
+   for(i=0;i<q-1;i++)
+      fprintf(f," %s,",StringGrid3->Cells[i][0].c_str());
+   fprintf(f," %s\n",StringGrid3->Cells[i][0].c_str());
+   fprintf(f,"Последняя симплекс таблица\n");
 
- for(int i=0;i<an+1;i++)
-  {for( j=0;j<ay;j++)
-        fprintf(f," %f,",a[i][j]);
-   fprintf(f," %f\n",a[i][j]);
-
+   for(int i=0;i<an+1;i++)
+   {
+      for( j=0;j<ay;j++)
+          fprintf(f," %f,",a[i][j]);
+      fprintf(f," %f\n",a[i][j]);
   }
   Memo1->Text=(AnsiString)"Файл записан";
- fclose(f);
+
+  fclose(f);
 }
 //---------------------------------------------------------------------------
 
