@@ -28,7 +28,7 @@ int verno1=0,verno2=0;
 
 int t,k,l;
 
-int gaus(double a[100][100] ,int y,int n)
+int gaus(double a[100][100] ,int y,int n)    //метод гаусса
 {// Метод гаусса
    int i, j, z;
    double m;
@@ -61,7 +61,7 @@ int gaus(double a[100][100] ,int y,int n)
 return 0;
 }
 
-int proverca(double a[100][100],int n,int y)
+int proverca(double a[100][100],int n,int y) //проверяем файл с мас.лин.огр. на наличие опорного решения
 {int i,j,k,h,b,dubl,d,
  cnt=0;// количество найденных столбцов.
  for(i=0;i<n;i++)
@@ -90,11 +90,8 @@ int proverca(double a[100][100],int n,int y)
          {
           cnt++;
          }
-
      }
-
   }
-
  if(cnt!=n)
    { Form1->StatusBar1->SimpleText="Статус программы: В матрице лин.огр. содержится не опорный план";
     return 1;
@@ -103,9 +100,7 @@ int proverca(double a[100][100],int n,int y)
 return 0;
 }
 
-
-
-void ocen(double a[100][100], int n, int y)
+void ocen(double a[100][100], int n, int y) //выводится оптимальное решение которое находится в симплекс таблице
 {
   int i,j,h,b,d;
   int v[100];
@@ -139,41 +134,10 @@ void ocen(double a[100][100], int n, int y)
         Form1->StringGrid3->Cells[i][0]=a[v[i]][y];
        }else         Form1->StringGrid3->Cells[i][0]=0;
     }
-
 return;
 }
-int ocenki(double a[100][100], double *bb, int n, int y )
-{  double min;
-   int  i,j;
-       for (j=0; j<y ; j++)
-      { 
-          a[n+1][j]=0;
-      }
-      for (j=0; j<y ; j++)
-      {
- 	       if (y-n<=0)
-                {        
-                    for (i=0; i<n ; i++)
-                    {
-                     a[n+1][j]=a[n+1][j]+a[i][j]*a[i][y];
-                    }
-                    a[n+1][j]=a[n+1][j]-bb[y];
-                }
-               else 
-               { 
-			for( i=0 ; i<n ; i++)
-                        {
-                     		a[n+1][j]=a[n+1][j]+a[i][j]*a[i][y];
-                        }
-               }
-      }
-return 0;
-}
 
-
-
-
-void __fastcall TForm1::Button1Click(TObject *Sender)
+void __fastcall TForm1::Button1Click(TObject *Sender) //чтение файла: открывает окно диалога для открытия файла с массивом коэф.целев.функции
 {
  double tmp,por;
   int f,pos,ti,i;
@@ -233,14 +197,14 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Button2Click(TObject *Sender)
+void __fastcall TForm1::Button2Click(TObject *Sender)   //чтение файла: открывает окно диалога для открытия файла с массивом линей.огранич.
 {
   double tmp,por;
   int f,pos,ti,i,ay_tmp,j;
   char buf[10000];
   verno2=0;
   if(OpenDialog1->Execute())
-    { //Memo1->Text=OpenDialog1->FileName;
+  { //Memo1->Text=OpenDialog1->FileName;
       ti=-1;
       if((f=open(OpenDialog1->FileName.c_str(),O_RDONLY))>0)
            ti=read(f,buf,9999);
@@ -249,62 +213,62 @@ void __fastcall TForm1::Button2Click(TObject *Sender)
       an=0;ay=0;
       while(buf[pos])
       {
-        while(buf[pos]==' ') pos++;
-
-        ay_tmp=0;
-        while(buf[pos]&&(buf[pos]!='\r')&&(buf[pos]!='\n'))
-          {
-            while((buf[pos]==' ')||(buf[pos]==','))
-             {pos++;}
-            if(buf[pos]=='-') por=-1; else por=1;
-            if((buf[pos]=='-')||(buf[pos]=='+'))
-              pos++;
-
-            if((buf[pos]<'0')||(buf[pos]>'9'))
-              {Form1->StatusBar1->SimpleText="Статус программы: Неверный формат файла";return;}
-
-            for(tmp=0;(buf[pos]>='0')&&(buf[pos]<='9');pos++)
-             {
-              tmp*=10;
-              tmp+=buf[pos]-'0';
-             }
-           if(buf[pos]=='.')
-             {
-               pos++;
-               while ((buf[pos]>='0')&&(buf[pos]<='9'))
-                {
-                 tmp*=10;
-                 tmp+=buf[pos]-'0';
-                 por*=10;
+         while(buf[pos]==' ')
+             pos++;
+         ay_tmp=0;
+         while(buf[pos]&&(buf[pos]!='\r')&&(buf[pos]!='\n'))
+         {
+             while((buf[pos]==' ')||(buf[pos]==','))
                  pos++;
-                };
+             if(buf[pos]=='-') por=-1; else por=1;
+             if((buf[pos]=='-')||(buf[pos]=='+'))
+                 pos++;
+             if((buf[pos]<'0')||(buf[pos]>'9'))
+             {
+                 Form1->StatusBar1->SimpleText="Статус программы: Неверный формат файла";
+                 return;
              }
-           tmp/=por;
-           a[an][ay_tmp++]=tmp;
-          }
+            for(tmp=0;(buf[pos]>='0')&&(buf[pos]<='9');pos++)
+            {
+                tmp*=10;
+                tmp+=buf[pos]-'0';
+            }
+            if(buf[pos]=='.')
+            {
+                pos++;
+                while ((buf[pos]>='0')&&(buf[pos]<='9'))
+                {
+                    tmp*=10;
+                    tmp+=buf[pos]-'0';
+                    por*=10;
+                    pos++;
+                };
+            }
+            tmp/=por;
+            a[an][ay_tmp++]=tmp;
+         }
         if(!ay)  ay=ay_tmp;
         else
-         if(ay!=ay_tmp)
-           Form1->StatusBar1->SimpleText="Статус программы:Матрица должна быть прямоугольной";
+           if(ay!=ay_tmp)
+               Form1->StatusBar1->SimpleText="Статус программы:Матрица должна быть прямоугольной";
         an++;
         while(buf[pos]&&(buf[pos]=='\r')||(buf[pos]=='\n')) pos++ ;
-
-      }
-
+     }
      StringGrid2->RowCount=an;
      StringGrid2->ColCount=ay;
-
      for(i=0;i<an;i++)
-      for(j=0;j<ay;j++)
-         StringGrid2->Cells[j][i]=a[i][j];
-    }
-Form1->StatusBar1->SimpleText="Статус программы:Файл прочитан";
-verno2=1;
+        for(j=0;j<ay;j++)
+           StringGrid2->Cells[j][i]=a[i][j];
+  }
+  if (an<2)
+     Form1->StatusBar1->SimpleText="Статус программы: Задача не решается симплекс-методом";
+  Form1->StatusBar1->SimpleText="Статус программы:Файл прочитан";
+  verno2=1;
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::Button3Click(TObject *Sender)
+void __fastcall TForm1::Button3Click(TObject *Sender)  //запуск программы
 { int j,i;
   double bb[100];double min;
 
@@ -334,7 +298,7 @@ ay--;
 if (proverca(a,an,ay)) return;
 t=2;
 do
-{    ocenki(a,bb,an,ay);
+{    
      t=2;
      for (j=0; j<ay ; j++)
      {
@@ -376,7 +340,7 @@ do
  StringGrid4->RowCount=an+1;
  StringGrid4->ColCount=ay+1;
 
- for(int i=0;i<an+1;i++)
+ for(int i=0;i<an+1;i++)     //вывод решения на форму
   for(int j=0;j<=ay;j++)
   StringGrid4->Cells[j][i]=a[i][j];
  Edit1->Text=a[an][ay];
@@ -384,7 +348,7 @@ do
  }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::Button4Click(TObject *Sender)
+void __fastcall TForm1::Button4Click(TObject *Sender) //вывод в файл
 {
  FILE *f;
  int i,j,q;
@@ -392,7 +356,7 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
  f=fopen(SaveDialog1->FileName.c_str(),"wt");
  if(f==NULL) {Form1->StatusBar1->SimpleText="Статус программы:Ошибка сохранения файла";return;}
 
- fprintf(f,"Максимум целевой функции %f\n",a[an][ay]);
+ fprintf(f,"Максимум целевой функции %.1f\n",a[an][ay]);
  fprintf(f,"Решение задачи: ");
  q=StringGrid3->ColCount;
  for(i=0;i<q-1;i++)
@@ -402,9 +366,12 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 
  for(int i=0;i<an+1;i++)
   {for( j=0;j<ay;j++)
-        fprintf(f," %f,",a[i][j]);
-   fprintf(f," %f\n",a[i][j]);
-
+        if ((a[i][j]<0)||( a[i][j]>=10))
+            fprintf(f," %.1f,",a[i][j]);
+        else  fprintf(f,"  %.1f,",a[i][j]);
+   if ((a[i][j]<0)||( a[i][j]>=10))
+        fprintf(f," %.1f\n",a[i][j]);
+   else fprintf(f,"  %.1f\n",a[i][j]);
   }
   Form1->StatusBar1->SimpleText="Статус программы:Файл записан";
  fclose(f);
@@ -413,28 +380,28 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 
 
 
-void __fastcall TForm1::N6Click(TObject *Sender)
+void __fastcall TForm1::N6Click(TObject *Sender) //пункт меню "Закрыть"
 {
  Form1->Close();        
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::N5Click(TObject *Sender)
+void __fastcall TForm1::N5Click(TObject *Sender)  //Запускает расчет результата. Из меню.
 {
  Button3->OnClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TForm1::N2Click(TObject *Sender)
+void __fastcall TForm1::N2Click(TObject *Sender)   //открывает окно диалога для открытия файла с коэф.целев. ф-ии.
 {
  Button1->OnClick(Sender);         
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::N3Click(TObject *Sender)
+void __fastcall TForm1::N3Click(TObject *Sender)  //открывает окно диалога для открытия файла с массивом линей.огранич..
 {
- Button2->Click();        
+ Button2->Click();
 }
 //---------------------------------------------------------------------------
 
