@@ -57,6 +57,8 @@ __published:	// IDE-managed Components
         void __fastcall N5Click(TObject *Sender);
         void __fastcall N2Click(TObject *Sender);
         void __fastcall N3Click(TObject *Sender);
+        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

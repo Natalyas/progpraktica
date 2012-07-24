@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 390
-  Top = 170
+  Left = 386
+  Top = 196
   BorderStyle = bsSingle
   Caption = #1057#1080#1084#1087#1083#1077#1082#1089' '#1084#1077#1090#1086#1076
   ClientHeight = 421
@@ -11,9 +11,11 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
@@ -240,7 +242,7 @@ object Form1: TForm1
       end
     end
     object N5: TMenuItem
-      Caption = #1047#1072#1087#1091#1089#1082
+      Caption = ' '#1047#1072#1087#1091#1089#1082'   F9'
       OnClick = N5Click
     end
     object N6: TMenuItem

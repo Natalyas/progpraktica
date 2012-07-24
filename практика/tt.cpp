@@ -148,7 +148,7 @@ void __fastcall TForm1::Button1Click(TObject *Sender) //чтение файла: открывает 
       ti=-1;
       if((f=open(OpenDialog1->FileName.c_str(),O_RDONLY))>0)
            ti=read(f,buf,9999);
-      if(ti<=0) {Form1->StatusBar1->SimpleText="Статус программы:Oшибка чтения файла "+OpenDialog1->FileName;return;}
+      if(ti<=0) {Form1->StatusBar1->SimpleText="Статус программы: Oшибка чтения файла "+OpenDialog1->FileName;return;}
       buf[ti]=0;pos=0;
       cl=0;
       while(buf[pos])
@@ -189,10 +189,10 @@ void __fastcall TForm1::Button1Click(TObject *Sender) //чтение файла: открывает 
   }
    if (cl<2)
  {
-        Form1->StatusBar1->SimpleText="Статус программы:Задача не решается симплекс методом "; return;
+        Form1->StatusBar1->SimpleText="Статус программы: Задача не решается симплекс-методом "; return;
  }
  else
-  {Form1->StatusBar1->SimpleText="Статус программы:Файл прочитан"; verno1=1;}
+  {Form1->StatusBar1->SimpleText="Статус программы: Файл прочитан"; verno1=1;}
 
 }
 //---------------------------------------------------------------------------
@@ -208,7 +208,7 @@ void __fastcall TForm1::Button2Click(TObject *Sender)   //чтение файла: открывае
       ti=-1;
       if((f=open(OpenDialog1->FileName.c_str(),O_RDONLY))>0)
            ti=read(f,buf,9999);
-      if(ti<=0) {Form1->StatusBar1->SimpleText="Статус программы:Ошибка чтения файла "+OpenDialog1->FileName;return;}
+      if(ti<=0) {Form1->StatusBar1->SimpleText="Статус программы: Ошибка чтения файла "+OpenDialog1->FileName;return;}
       buf[ti]=0;pos=0;
       an=0;ay=0;
       while(buf[pos])
@@ -250,7 +250,7 @@ void __fastcall TForm1::Button2Click(TObject *Sender)   //чтение файла: открывае
         if(!ay)  ay=ay_tmp;
         else
            if(ay!=ay_tmp)
-               Form1->StatusBar1->SimpleText="Статус программы:Матрица должна быть прямоугольной";
+               Form1->StatusBar1->SimpleText="Статус программы: Матрица должна быть прямоугольной";
         an++;
         while(buf[pos]&&(buf[pos]=='\r')||(buf[pos]=='\n')) pos++ ;
      }
@@ -262,6 +262,8 @@ void __fastcall TForm1::Button2Click(TObject *Sender)   //чтение файла: открывае
   }
   if (an<2)
      Form1->StatusBar1->SimpleText="Статус программы: Задача не решается симплекс-методом";
+  if ((an>96)||(ay>97))
+     Form1->StatusBar1->SimpleText="Статус программы: Превышен допустимый размер файла";
   Form1->StatusBar1->SimpleText="Статус программы:Файл прочитан";
   verno2=1;
 }
@@ -344,7 +346,7 @@ do
   for(int j=0;j<=ay;j++)
   StringGrid4->Cells[j][i]=a[i][j];
  Edit1->Text=a[an][ay];
- Form1->StatusBar1->SimpleText="Статус программы:Решение завершено"  ;
+ Form1->StatusBar1->SimpleText="Статус программы: Решение завершено"  ;
  }
 //---------------------------------------------------------------------------
 
@@ -352,9 +354,9 @@ void __fastcall TForm1::Button4Click(TObject *Sender) //вывод в файл
 {
  FILE *f;
  int i,j,q;
- if(!SaveDialog1->Execute()) {Form1->StatusBar1->SimpleText="Статус программы:Ошибка сохранения файла";return;}
+ if(!SaveDialog1->Execute()) {Form1->StatusBar1->SimpleText="Статус программы: Ошибка сохранения файла";return;}
  f=fopen(SaveDialog1->FileName.c_str(),"wt");
- if(f==NULL) {Form1->StatusBar1->SimpleText="Статус программы:Ошибка сохранения файла";return;}
+ if(f==NULL) {Form1->StatusBar1->SimpleText="Статус программы: Ошибка сохранения файла";return;}
 
  fprintf(f,"Максимум целевой функции %.1f\n",a[an][ay]);
  fprintf(f,"Решение задачи: ");
@@ -373,7 +375,7 @@ void __fastcall TForm1::Button4Click(TObject *Sender) //вывод в файл
         fprintf(f," %.1f\n",a[i][j]);
    else fprintf(f,"  %.1f\n",a[i][j]);
   }
-  Form1->StatusBar1->SimpleText="Статус программы:Файл записан";
+  Form1->StatusBar1->SimpleText="Статус программы: Файл записан";
  fclose(f);
 }
 //---------------------------------------------------------------------------
@@ -402,6 +404,16 @@ void __fastcall TForm1::N2Click(TObject *Sender)   //открывает окно диалога для 
 void __fastcall TForm1::N3Click(TObject *Sender)  //открывает окно диалога для открытия файла с массивом линей.огранич..
 {
  Button2->Click();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+     //запуск программы
+  if (Key==120)
+  {   Button3->OnClick(Sender); }
 }
 //---------------------------------------------------------------------------
 
